@@ -1,8 +1,9 @@
+#include <iostream>
+using namespace std;
+
+// Abstraction: Payment defines a common contract.
 class Payment {
 public:
-    // Abstraction
-    virtual bool pay(double amount) = 0;
-
-    virtual ~Payment() {
-    }
+    virtual bool pay(double amount) = 0; // Pure virtual function.
+    virtual ~Payment() = default;
 };
