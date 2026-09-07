@@ -9,28 +9,16 @@ private:
     int duration;
 
 public:
-    // Compile-time polymorphism: overloaded constructors
-    Movie() {
-        title = "";
-        language = "";
-        duration = 0;
-    }
+    Movie() : title(""), language(""), duration(0) {}
 
+    // Compile-time polymorphism: overloaded constructors.
     Movie(string title, string language, int duration) {
-        this->title = title;          // this keyword
+        this->title = title;       // this keyword
         this->language = language;
         this->duration = duration;
     }
 
-    string getTitle() const {
-        return title;
-    }
-
-    string getLanguage() const {
-        return language;
-    }
-
-    int getDuration() const {
-        return duration;
-    }
+    string getTitle() const { return title; }
+    string getLanguage() const { return language; }
+    int getDuration() const { return duration; }
 };
