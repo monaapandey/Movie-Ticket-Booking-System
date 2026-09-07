@@ -1,45 +1,36 @@
-enum SeatType {
-    SILVER,
-    GOLD,
-    PLATINUM
-};
+#include <iostream>
+#include <string>
+using namespace std;
+
+enum class SeatType { SILVER, GOLD, PLATINUM };
 
 class Seat {
 private:
-    int seatNumber;
+    string seatNumber;
     SeatType type;
 
+    static constexpr double SILVER_PRICE = 150.0;
+    static constexpr double GOLD_PRICE = 250.0;
+    static constexpr double PLATINUM_PRICE = 400.0;
+
 public:
-    Seat(int seatNumber, SeatType type) {
-        this->seatNumber = seatNumber;
+    Seat(string seatNumber, SeatType type) {
+        this->seatNumber = seatNumber;   // this keyword
         this->type = type;
     }
 
-    int getSeatNumber() const {
-        return seatNumber;
-    }
-
-    SeatType getType() const {
-        return type;
-    }
+    string getSeatNumber() const { return seatNumber; }
+    SeatType getType() const { return type; }
 
     double getPrice() const {
-        if (type == SILVER)
-            return 150;
-
-        if (type == GOLD)
-            return 250;
-
-        return 400;
+        if (type == SeatType::SILVER) return SILVER_PRICE;
+        if (type == SeatType::GOLD) return GOLD_PRICE;
+        return PLATINUM_PRICE;
     }
 
     string getTypeName() const {
-        if (type == SILVER)
-            return "SILVER";
-
-        if (type == GOLD)
-            return "GOLD";
-
+        if (type == SeatType::SILVER) return "SILVER";
+        if (type == SeatType::GOLD) return "GOLD";
         return "PLATINUM";
     }
 };
