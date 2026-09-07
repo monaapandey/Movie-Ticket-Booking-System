@@ -1,78 +1,49 @@
-#include<iostream>
+#include <iostream>
+#include <vector>
+#include <string>
 using namespace std;
-enum BookingStatus {
-    PENDING,
-    CONFIRMED,
-    CANCELLED
-};
+
+class Customer;
+class Show;
+class ShowSeat;
+
+enum class BookingStatus { PENDING, CONFIRMED, CANCELLED };
 
 class Booking {
 private:
+    static int nextBookingId;       // Static member: unique booking ID generation.
     int bookingId;
     Customer* customer;
     Show* show;
-    vector<ShowSeat*> bookedSeats;
-
-    // Encapsulation
+    vector<ShowSeat*> seats;         // Aggregation: references existing ShowSeats.
     double totalAmount;
-
     BookingStatus status;
 
-    // Static member for unique booking IDs
-    static int nextBookingId;
-
 public:
-    Booking(Customer* customer,
-            Show* show,
-            vector<ShowSeat*> seats,
-            double amount) {
-
-        bookingId = nextBookingId++;
-
+    Booking(Customer* customer, Show* show,
+            const vector<ShowSeat*>& seats, double totalAmount) {
+        this->bookingId = nextBookingId++;
         this->customer = customer;
         this->show = show;
-        this->bookedSeats = seats;
-        this->totalAmount = amount;
-
-        status = PENDING;
+        this->seats = seats;
+        this->totalAmount = totalAmount;
+        this->status = BookingStatus::PENDING;
     }
 
-    void confirm() {
-        status = CONFIRMED;
-    }
+    void confirm() { status = BookingStatus::CONFIRMED; }
+    void cancel() { status = BookingStatus::CANCELLED; }
 
-    void cancel() {
-        if (status != CONFIRMED)
-            return;
+    int getBookingId() const { return bookingId; }
+    Customer* getCustomer() const { return customer; }
+    Show* getShow() const { return show; }
+    const vector<ShowSeat*>& getSeats() const { return seats; }
+    double getTotalAmount() const { return totalAmount; }
+    BookingStatus getStatus() const { return status; }
 
-        for (ShowSeat* seat : bookedSeats)
-            seat->release();
-
-        status = CANCELLED;
-    }
-
-    int getBookingId() const {
-        return bookingId;
-    }
-
-    Customer* getCustomer() const {
-        return customer;
-    }
-
-    Show* getShow() const {
-        return show;
-    }
-
-    vector<ShowSeat*> getBookedSeats() const {
-        return bookedSeats;
-    }
-
-    double getTotalAmount() const {
-        return totalAmount;
-    }
-
-    BookingStatus getStatus() const {
-        return status;
+    string getStatusName() const {
+        if (status == BookingStatus::CONFIRMED) return "CONFIRMED";
+        if (status == BookingStatus::CANCELLED) return "CANCELLED";
+        return "PENDING";
     }
 };
 
