@@ -1,43 +1,37 @@
-enum SeatStatus {
-    AVAILABLE,
-    BOOKED
-};
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Seat;
+
+enum class SeatStatus { AVAILABLE, BOOKED };
 
 class ShowSeat {
 private:
     Seat* seat;
-
-    // Encapsulation:
-    // status cannot be directly modified from outside.
     SeatStatus status;
 
 public:
     ShowSeat(Seat* seat) {
-        this->seat = seat;
-        status = AVAILABLE;
+        this->seat = seat; // this keyword
+        this->status = SeatStatus::AVAILABLE;
     }
 
-    bool isAvailable() const {
-        return status == AVAILABLE;
-    }
+    bool isAvailable() const { return status == SeatStatus::AVAILABLE; }
 
+    // Encapsulation: status is private and changes only through validation methods.
     bool book() {
-        if (!isAvailable())
-            return false;
-
-        status = BOOKED;
+        if (!isAvailable()) return false;
+        status = SeatStatus::BOOKED;
         return true;
     }
 
-    void release() {
-        status = AVAILABLE;
+    bool release() {
+        if (isAvailable()) return false;
+        status = SeatStatus::AVAILABLE;
+        return true;
     }
 
-    Seat* getSeat() const {
-        return seat;
-    }
-
-    SeatStatus getStatus() const {
-        return status;
-    }
+    Seat* getSeat() const { return seat; }
+    SeatStatus getStatus() const { return status; }
 };
